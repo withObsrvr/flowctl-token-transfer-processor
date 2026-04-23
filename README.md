@@ -178,31 +178,51 @@ See:
 
 ## Releasing
 
-This repo now includes GitHub Actions release automation:
+This repo now uses a fast binary-first release setup:
 
-- `.github/workflows/release.yml`
+- `.github/workflows/release-binaries.yml` — runs on version tags and creates GitHub releases with binary assets
+- `.github/workflows/publish-image.yml` — manual Docker publishing workflow
 
-To publish a release:
+### Release binaries
 
 ```bash
 git tag v0.1.0
 git push origin v0.1.0
 ```
 
-That will build and publish a multi-platform image to:
+That creates a GitHub Release with assets like:
 
 ```text
-ghcr.io/withobsrvr/flowctl-token-transfer-processor:v0.1.0
+token-transfer-processor-linux-amd64.tar.gz
+token-transfer-processor-linux-arm64.tar.gz
+token-transfer-processor-darwin-amd64.tar.gz
+token-transfer-processor-darwin-arm64.tar.gz
+checksums.txt
 ```
 
-It also publishes convenience tags like:
+### Publish a Docker image manually
 
-```text
-ghcr.io/withobsrvr/flowctl-token-transfer-processor:0.1
-ghcr.io/withobsrvr/flowctl-token-transfer-processor:0
-ghcr.io/withobsrvr/flowctl-token-transfer-processor:sha-<commit>
-ghcr.io/withobsrvr/flowctl-token-transfer-processor:latest
-```
+Use the GitHub Actions UI and run:
+
+- `Publish Docker Image`
+
+Recommended defaults for now:
+
+- `image_tag`: `v0.1.0`
+- `platforms`: `linux/amd64`
+- `push_latest`: `false`
+
+## CI
+
+This repo also includes a normal CI workflow:
+
+- `.github/workflows/ci.yml`
+
+It verifies:
+
+- proto generation is up to date
+- tests pass
+- the processor builds
 
 ## Next steps
 

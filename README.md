@@ -192,7 +192,16 @@ git push origin v0.1.0
 That will build and publish a multi-platform image to:
 
 ```text
-ghcr.io/withObsrvr/flowctl-token-transfer-processor:v0.1.0
+ghcr.io/withobsrvr/flowctl-token-transfer-processor:v0.1.0
+```
+
+It also publishes convenience tags like:
+
+```text
+ghcr.io/withobsrvr/flowctl-token-transfer-processor:0.1
+ghcr.io/withobsrvr/flowctl-token-transfer-processor:0
+ghcr.io/withobsrvr/flowctl-token-transfer-processor:sha-<commit>
+ghcr.io/withobsrvr/flowctl-token-transfer-processor:latest
 ```
 
 ## Next steps

@@ -1,0 +1,18 @@
+processor:
+  name: "Token Transfer Processor"
+  version: "0.1.0"
+  description: "Extracts Stellar token transfer events from raw ledgers"
+  output: "stellar.token.transfer.v1"
+
+network:
+  passphrase: ${NETWORK_PASSPHRASE}
+
+flowctl:
+  enabled: false
+  endpoint: localhost:8080
+
+metrics:
+  enabled: true
+
+health:
+  port: 8088

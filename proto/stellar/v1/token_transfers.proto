@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package stellar.v1;
+
+option go_package = "github.com/withObsrvr/flowctl-token-transfer-processor/proto/stellar/v1;stellarv1";
+
+import "google/protobuf/timestamp.proto";
+
+// TokenTransferEventMeta contains metadata about a token transfer event.
+message TokenTransferEventMeta {
+  uint32 ledger_sequence = 1;
+  google.protobuf.Timestamp closed_at = 2;
+  string tx_hash = 3;
+  uint32 transaction_index = 4;
+  optional uint32 operation_index = 5;
+  string contract_address = 6;
+  bool in_successful_tx = 7;
+}
+
+// Asset represents a Stellar asset.
+message Asset {
+  oneof asset {
+    bool native = 1;
+    IssuedAsset issued = 2;
+    string contract_id = 3;
+  }
+}
+
+message IssuedAsset {
+  string asset_code = 1;
+  string asset_issuer = 2;
+}
+
+message Transfer {
+  string from = 1;
+  string to = 2;
+  Asset asset = 3;
+  string amount = 4;
+}
+
+message Mint {
+  string to = 1;
+  Asset asset = 2;
+  string amount = 3;
+}
+
+message Burn {
+  string from = 1;
+  Asset asset = 2;
+  string amount = 3;
+}
+
+message Clawback {
+  string from = 1;
+  Asset asset = 2;
+  string amount = 3;
+}
+
+message Fee {
+  string from = 1;
+  Asset asset = 2;
+  string amount = 3;
+}
+
+message TokenTransferEvent {
+  TokenTransferEventMeta meta = 1;
+
+  oneof event {
+    Transfer transfer = 2;
+    Mint mint = 3;
+    Burn burn = 4;
+    Clawback clawback = 5;
+    Fee fee = 6;
+  }
+}
+
+message TokenTransferBatch {
+  repeated TokenTransferEvent events = 1;
+}

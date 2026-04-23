@@ -1,0 +1,31 @@
+apiVersion: flowctl/v1
+kind: Pipeline
+metadata:
+  name: token-transfer-reference
+  description: Extract Stellar token transfer events on testnet
+
+spec:
+  driver: process
+
+  sources:
+    - id: stellar-source
+      type: stellar-live-source@v1.0.0
+      config:
+        network_passphrase: "Test SDF Network ; September 2015"
+        backend_type: RPC
+        rpc_endpoint: https://soroban-testnet.stellar.org
+        start_ledger: 54000000
+
+  processors:
+    - id: token-transfer
+      type: token-transfer-processor@v0.1.0
+      inputs: ["stellar-source"]
+      config:
+        network_passphrase: "Test SDF Network ; September 2015"
+
+  sinks:
+    - id: duckdb-sink
+      type: duckdb-consumer@v1.0.0
+      inputs: ["token-transfer"]
+      config:
+        database_path: ./token-transfer-reference.duckdb
